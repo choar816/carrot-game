@@ -23,9 +23,10 @@ let timeLeft = 3;
 let timerId;
 
 function showModal(msg) {
+  modalMsg.textContent = msg;
   modal.style.display = 'block';
-  modalMsg = msg;
 }
+
 function hideModal() {
   modal.style.display = 'none';
 }
