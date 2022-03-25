@@ -16,6 +16,8 @@ body {
 .btn-start {
   display: block;
   margin: auto;
+  font-size: 20px;
+  border: 2px solid black;
 }
 
 .time-left, .carrot-left {
@@ -59,10 +61,23 @@ body {
 
   width: 200px;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+}
+
+.modal button {
+  font-size: 25px;
+  background: none;
+  border: none;
+}
+
+.modal button:hover {
+  transform: scale(1.2);
 }
 
 .modal p {
   margin: 0;
   margin-top: 10px;
+  color: white;
+  font-size: 20px;
 }
