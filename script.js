@@ -12,6 +12,7 @@ let timeLeft = 10;
 let timerId;
 
 function startTimer() {
+  console.log('timer start');
   timeLeft = 10;
   timerId = setInterval(() => {
     timeText.textContent = `00:${(timeLeft < 10) ? '0' : ''}${timeLeft}`;
@@ -24,10 +25,12 @@ function startTimer() {
 }
 
 function pauseTimer() {
+  console.log('timer pause');
   clearInterval(timerId);
 }
 
 function resumeTimer() {
+  console.log('timer resume');
   timerId = setInterval(() => {
     timeText.textContent = `00:${(timeLeft < 10) ? '0' : ''}${timeLeft}`;
     timeLeft--;
@@ -41,6 +44,7 @@ function resumeTimer() {
 /////////////////////////////////////////////////////////////////
 
 let isGameOn = false;
+let isGameOver = false;
 let haveBeenPaused = false;
 let numCarrotLeft = 10;
 
@@ -54,19 +58,24 @@ function hideModal() {
 }
 
 btnStart.addEventListener('click', () => {
-  if (!isGameOn) {
+  console.log('btnStart clicked');
+
+  if (!isGameOn) { // 게임이 정지되어 있을 때 (맨 처음)
     isGameOn = true;
     if (!haveBeenPaused)
       startGame();
     else
       resumeGame();
-  } else {
+  } else { // 게임이 실행중일 때
     isGameOn = false;
     pauseGame();
   }
 });
 
 function startGame() {
+  isGameOn = true;
+  isGameOver = false;
+  haveBeenPaused = false;
   btnStart.textContent = '◼';
   numCarrotLeft = 10;
   carrotLeft.textContent = 10;
@@ -78,6 +87,7 @@ function startGame() {
 }
 
 function resumeGame() {
+  isGameOn = true;
   btnStart.textContent = '◼';
   btnStart.style.visibility = 'visible';
   hideModal();
@@ -86,6 +96,7 @@ function resumeGame() {
 }
 
 function pauseGame() {
+  isGameOn = false;
   haveBeenPaused = true;
   btnStart.textContent = '▶';
   btnStart.style.visibility = 'hidden';
@@ -95,13 +106,12 @@ function pauseGame() {
   pauseTimer();
 }
 
-
 btnRetry.addEventListener('click', () => {
   hideModal();
-  if (haveBeenPaused)
-    resumeGame();
-  else {
+  if (isGameOver) {
     startGame();
+  } else if (haveBeenPaused) {
+    resumeGame();
   }
 });
 
@@ -160,12 +170,14 @@ function spreadCarrotAndBug() {
 }
 
 function loseGame() {
+  isGameOver = true;
   pauseTimer();
-  showModal('YOU LOST 😭');
+  showModal('YOU LOSE 😭');
   gameDisplay.removeEventListener('click', handleClickBugAndCarrot);
 }
 
 function winGame() {
+  isGameOver = true;
   pauseTimer();
   showModal('YOU WIN 🎉');
   gameDisplay.removeEventListener('click', handleClickBugAndCarrot);
