@@ -14,10 +14,11 @@ let timerId;
 function startTimer() {
   console.log('timer start');
   timeLeft = 10;
+  timeText.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
   timerId = setInterval(() => {
-    timeText.textContent = `00:${(timeLeft < 10) ? '0' : ''}${timeLeft}`;
     timeLeft--;
-    if (timeLeft < 0) {
+    timeText.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+    if (timeLeft <= 0) {
       clearInterval(timerId);
       loseGame();
     }
@@ -31,10 +32,11 @@ function pauseTimer() {
 
 function resumeTimer() {
   console.log('timer resume');
+  timeText.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
   timerId = setInterval(() => {
-    timeText.textContent = `00:${(timeLeft < 10) ? '0' : ''}${timeLeft}`;
     timeLeft--;
-    if (timeLeft < 0) {
+    timeText.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+    if (timeLeft <= 0) {
       clearInterval(timerId);
       loseGame();
     }
