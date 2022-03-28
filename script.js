@@ -77,6 +77,7 @@ function startGame() {
   isGameOver = false;
   haveBeenPaused = false;
   btnStart.textContent = '◼';
+  btnStart.style.visibility = 'visible';
   numCarrotLeft = 10;
   carrotLeft.textContent = 10;
   timeLeft = 5;
@@ -90,6 +91,7 @@ function resumeGame() {
   isGameOn = true;
   btnStart.textContent = '◼';
   btnStart.style.visibility = 'visible';
+  gameDisplay.addEventListener('click', handleClickBugAndCarrot);
   hideModal();
   showCarrot();
   resumeTimer();
@@ -100,6 +102,7 @@ function pauseGame() {
   haveBeenPaused = true;
   btnStart.textContent = '▶';
   btnStart.style.visibility = 'hidden';
+  gameDisplay.removeEventListener('click', handleClickBugAndCarrot);
 
   hideCarrot();
   showModal('Replay?');
