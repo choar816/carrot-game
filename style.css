@@ -16,7 +16,7 @@ body {
 .btn-start {
   display: block;
   margin: auto;
-  font-size: 20px;
+  font-size: 30px;
   border: 2px solid black;
 }
 
@@ -47,7 +47,7 @@ body {
 .carrot {
   background-image: url('./img/carrot.png');
 }
-.bug:hover, .carrot:hover {
+.btn-start:hover, .bug:hover, .carrot:hover {
   transform: scale(1.2);
 }
 
