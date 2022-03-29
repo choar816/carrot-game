@@ -18,27 +18,13 @@ let timeText = document.querySelector('.time-left');
 let timeLeft = 10;
 let timer;
 
-function startTimer() {
-  console.log('timer start');
-  timeLeft = 10;
-  timeText.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
-  timer = setInterval(() => {
-    timeLeft--;
-    timeText.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      loseGame();
-    }
-  }, 1000);
-}
-
 function pauseTimer() {
   console.log('timer pause');
   clearInterval(timer);
 }
 
-function resumeTimer() {
-  console.log('timer resume');
+function startTimer() {
+  console.log('timer start');
   timeText.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
   timer = setInterval(() => {
     timeLeft--;
@@ -59,9 +45,8 @@ let numCarrotLeft = 10;
 btnStart.addEventListener('click', () => {
   if (!isGameOn) { // 게임이 정지되어 있을 때 (맨 처음)
     if (!haveBeenPaused)
-      startGame();
-    else
-      resumeGame();
+      initGame();
+    startGame();
   } else { // 게임이 실행중일 때
     pauseGame();
   }
@@ -69,44 +54,31 @@ btnStart.addEventListener('click', () => {
 
 btnRetry.addEventListener('click', () => {
   hideModal();
-  if (isGameOver) {
-    startGame();
-  } else if (haveBeenPaused) {
-    resumeGame();
-  }
+  if (isGameOver) initGame();
+  startGame();
 });
 
 function startGame() {
-  bgSound.currentTime = 0;
   bgSound.play();
 
   isGameOn = true;
-  isGameOver = false;
-  haveBeenPaused = false;
-
   btnStart.textContent = '◼';
   showBtnStart();
-
-  numCarrotLeft = 10;
-  updateCarrotText();
-  
-  timeLeft = 5;
-  removeCarrotAndBug();
-  spreadCarrotAndBug();
   gameDisplay.addEventListener('click', handleClickBugAndCarrot);
+  showCarrot();
   startTimer();
 }
 
-function resumeGame() {
-  bgSound.play();
+function initGame() {
+  bgSound.currentTime = 0;
+  isGameOver = false;
+  haveBeenPaused = false;
 
-  isGameOn = true;
-  btnStart.textContent = '◼';
-  showBtnStart();
-  gameDisplay.addEventListener('click', handleClickBugAndCarrot);
-  hideModal();
-  showCarrot();
-  resumeTimer();
+  numCarrotLeft = 10;
+  updateCarrotText();
+  timeLeft = 10;
+  removeCarrotAndBug();
+  spreadCarrotAndBug();
 }
 
 function pauseGame() {
@@ -203,6 +175,7 @@ function hideModal() {
 
 function loseGame() {
   bgSound.pause();
+  bugSound.play();
   isGameOver = true;
   pauseTimer();
   showModal('YOU LOSE 😭');
