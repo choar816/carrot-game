@@ -6,6 +6,13 @@ const modalMsg = modal.querySelector('p');
 const btnRetry = modal.querySelector('button');
 const gameRect = gameDisplay.getBoundingClientRect();
 
+// sound
+const carrotSound = new Audio('./sound/carrot_pull.mp3');
+const bugSound = new Audio('./sound/bug_pull.mp3');
+const bgSound = new Audio('./sound/bg.mp3');
+const winSound = new Audio('./sound/game_win.mp3');
+const alertSound = new Audio('./sound/alert.wav');
+
 // timer
 let timeText = document.querySelector('.time-left');
 let timeLeft = 10;
@@ -70,6 +77,9 @@ btnRetry.addEventListener('click', () => {
 });
 
 function startGame() {
+  bgSound.currentTime = 0;
+  bgSound.play();
+
   isGameOn = true;
   isGameOver = false;
   haveBeenPaused = false;
@@ -88,6 +98,8 @@ function startGame() {
 }
 
 function resumeGame() {
+  bgSound.play();
+
   isGameOn = true;
   btnStart.textContent = '◼';
   showBtnStart();
@@ -98,6 +110,9 @@ function resumeGame() {
 }
 
 function pauseGame() {
+  alertSound.play();
+  bgSound.pause();
+
   isGameOn = false;
   haveBeenPaused = true;
   gameDisplay.removeEventListener('click', handleClickBugAndCarrot);
@@ -119,9 +134,11 @@ function showBtnStart() {
 // carrot, bug
 function handleClickBugAndCarrot(e) {
   if (e.target.className === 'bug') {
+    bugSound.play();
     loseGame();
   } else if (e.target.className === 'carrot') {
     e.target.remove();
+    carrotSound.play();
     numCarrotLeft--;
     updateCarrotText();
     if (numCarrotLeft === 0)
@@ -185,6 +202,7 @@ function hideModal() {
 }
 
 function loseGame() {
+  bgSound.pause();
   isGameOver = true;
   pauseTimer();
   showModal('YOU LOSE 😭');
@@ -192,6 +210,8 @@ function loseGame() {
 }
 
 function winGame() {
+  bgSound.pause();
+  winSound.play();
   isGameOver = true;
   pauseTimer();
   showModal('YOU WIN 🎉');
