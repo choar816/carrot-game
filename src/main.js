@@ -1,9 +1,9 @@
+'use strict';
+import Modal from './modal.js';
+
 const gameDisplay = document.querySelector('.game-display');
 const btnStart = document.querySelector('.btn-start');
 const carrotLeft = document.querySelector('.carrot-left');
-const modal = document.querySelector('.modal');
-const modalMsg = modal.querySelector('p');
-const btnRetry = modal.querySelector('button');
 const gameRect = gameDisplay.getBoundingClientRect();
 
 // sound
@@ -52,12 +52,6 @@ btnStart.addEventListener('click', () => {
   }
 });
 
-btnRetry.addEventListener('click', () => {
-  hideModal();
-  if (isGameOver) initGame();
-  startGame();
-});
-
 function startGame() {
   bgSound.play();
 
@@ -90,7 +84,7 @@ function pauseGame() {
   gameDisplay.removeEventListener('click', handleClickBugAndCarrot);
 
   hideBtnStart();
-  showModal('Replay?');
+  modal.show('Replay?');
   hideCarrot();
   pauseTimer();
 }
@@ -102,6 +96,13 @@ function hideBtnStart() {
 function showBtnStart() {
   btnStart.style.visibility = 'visible';
 }
+
+const modal = new Modal();
+
+modal.setClickListener(() => {
+  if (isGameOver) initGame();
+  startGame();
+});
 
 // carrot, bug
 function handleClickBugAndCarrot(e) {
@@ -163,22 +164,12 @@ function spreadCarrotAndBug() {
   }
 }
 
-// modal
-function showModal(msg) {
-  modalMsg.textContent = msg;
-  modal.style.display = 'block';
-}
-
-function hideModal() {
-  modal.style.display = 'none';
-}
-
 function loseGame() {
   bgSound.pause();
   bugSound.play();
   isGameOver = true;
   pauseTimer();
-  showModal('YOU LOSE 😭');
+  modal.show('YOU LOSE 😭');
   gameDisplay.removeEventListener('click', handleClickBugAndCarrot);
 }
 
@@ -187,6 +178,6 @@ function winGame() {
   winSound.play();
   isGameOver = true;
   pauseTimer();
-  showModal('YOU WIN 🎉');
+  modal.show('YOU WIN 🎉');
   gameDisplay.removeEventListener('click', handleClickBugAndCarrot);
 }
